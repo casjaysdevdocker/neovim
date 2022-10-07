@@ -47,7 +47,7 @@ EXPOSE $PORT
 
 COPY --from=build /. /
 
-HEALTHCHECK CMD ["/usr/local/bin/entrypoint-neovim.sh", "healthcheck"]
+HEALTHCHECK --interval=15s --timeout=3s CMD ["/usr/local/bin/entrypoint-neovim.sh", "healthcheck"]
 
 ENTRYPOINT ["/usr/local/bin/entrypoint-neovim.sh"]
 
