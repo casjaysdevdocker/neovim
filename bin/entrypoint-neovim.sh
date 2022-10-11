@@ -8,13 +8,17 @@
 # @@Copyright        :  Copyright: (c) 2022 Jason Hempstead, Casjays Developments
 # @@Created          :  Wednesday, Jul 20, 2022 21:02 EDT
 # @@File             :  entrypoint-neovim.sh
-# @@Description      :  
-# @@Changelog        :  
+# @@Description      :
+# @@Changelog        :
 # @@TODO             :  Better documentation
-# @@Other            :  
-# @@Resource         :  
-# @@sudo/root        :  
+# @@Other            :
+# @@Resource         :
+# @@sudo/root        :
 # @@Template         :  other/docker-entrypoint
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Set bash options
+[ -n "$DEBUG" ] && set -x
+set -o pipefail
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 APPNAME="$(basename "$0" 2>/dev/null)"
 VERSION="202207202102-git"
@@ -22,12 +26,6 @@ HOME="${USER_HOME:-$HOME}"
 USER="${SUDO_USER:-$USER}"
 RUN_USER="${SUDO_USER:-$USER}"
 SRC_DIR="${BASH_SOURCE%/*}"
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Set bash options
-[[ "$1" == "--debug" ]] && set -xo pipefail && export SCRIPT_OPTS="--debug" && export _DEBUG="on"
-[[ "$1" == "--raw" ]] && SHOW_RAW="true" && printf_color() { printf '%b' "$1" | tr -d '\t\t' | sed '/^%b$/d;s,\x1B\[[0-9;]*[a-zA-Z],,g'; }
-set -o pipefail
-
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Set functions
 __version() { echo -e ${GREEN:-}"$VERSION"${NC:-}; }
