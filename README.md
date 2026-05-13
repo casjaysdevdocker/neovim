@@ -3,47 +3,77 @@
 neovim README  
   
   
-## Run container
+## Install my system scripts  
 
+```shell
+ sudo bash -c "$(curl -q -LSsf "https://github.com/systemmgr/installer/raw/main/install.sh")"
+ sudo systemmgr --config && sudo systemmgr install scripts  
+```
+  
+## Automatic install/update  
+  
 ```shell
 dockermgr update neovim
 ```
-
-### via command line
-
+  
+## Install and run container
+  
 ```shell
-docker pull casjaysdevdocker/neovim:latest && \
+dockerHome="/var/lib/srv/$USER/docker/casjaysdevdocker/neovim/neovim/latest/rootfs"
+mkdir -p "/var/lib/srv/$USER/docker/neovim/rootfs"
+git clone "https://github.com/dockermgr/neovim" "$HOME/.local/share/CasjaysDev/dockermgr/neovim"
+cp -Rfva "$HOME/.local/share/CasjaysDev/dockermgr/neovim/rootfs/." "$dockerHome/"
 docker run -d \
 --restart always \
---name casjaysdevdocker-neovim \
---hostname casjaysdev-neovim \
+--privileged \
+--name casjaysdevdocker-neovim-latest \
+--hostname neovim \
 -e TZ=${TIMEZONE:-America/New_York} \
--v $HOME/.local/share/docker/storage/neovim/neovim/data:/data \
--v $HOME/.local/share/docker/storage/neovim/neovim/config:/config \
+-v "$dockerHome/data:/data:z" \
+-v "$dockerHome/config:/config:z" \
 -p 80:80 \
 casjaysdevdocker/neovim:latest
 ```
-
-### via docker-compose
-
+  
+## via docker-compose  
+  
 ```yaml
 version: "2"
 services:
-  neovim:
+  ProjectName:
     image: casjaysdevdocker/neovim
-    container_name: neovim
+    container_name: casjaysdevdocker-neovim
     environment:
       - TZ=America/New_York
-      - HOSTNAME=casjaysdev-neovim
+      - HOSTNAME=neovim
     volumes:
-      - $HOME/.local/share/docker/storage/neovim/data:/data:z
-      - $HOME/.local/share/docker/storage/neovim/config:/config:z
+      - "/var/lib/srv/$USER/docker/casjaysdevdocker/neovim/neovim/latest/rootfs/data:/data:z"
+      - "/var/lib/srv/$USER/docker/casjaysdevdocker/neovim/neovim/latest/rootfs/config:/config:z"
     ports:
       - 80:80
     restart: always
 ```
-
+  
+## Get source files  
+  
+```shell
+dockermgr download src casjaysdevdocker/neovim
+```
+  
+OR
+  
+```shell
+git clone "https://github.com/casjaysdevdocker/neovim" "$HOME/Projects/github/casjaysdevdocker/neovim"
+```
+  
+## Build container  
+  
+```shell
+cd "$HOME/Projects/github/casjaysdevdocker/neovim"
+buildx 
+```
+  
 ## Authors  
-
-🤖 casjay: [Github](https://github.com/casjay) [Docker](https://hub.docker.com/r/casjay) 🤖  
-⛵ CasjaysDevdDocker: [Github](https://github.com/casjaysdev) [Docker](https://hub.docker.com/r/casjaysdevdocker) ⛵  
+  
+🤖 casjay: [Github](https://github.com/casjay) 🤖  
+⛵ casjaysdevdocker: [Github](https://github.com/casjaysdevdocker) [Docker](https://hub.docker.com/u/casjaysdevdocker) ⛵  
