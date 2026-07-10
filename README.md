@@ -19,8 +19,8 @@ dockermgr update neovim
 ## Install and run container
   
 ```shell
-dockerHome="/var/lib/srv/$USER/docker/casjaysdevdocker/neovim/neovim/latest/rootfs"
-mkdir -p "/var/lib/srv/$USER/docker/neovim/rootfs"
+dockerHome="/srv/$USER/docker/casjaysdevdocker/neovim/neovim/latest/rootfs"
+mkdir -p "/srv/$USER/docker/neovim/rootfs"
 git clone "https://github.com/dockermgr/neovim" "$HOME/.local/share/CasjaysDev/dockermgr/neovim"
 cp -Rfva "$HOME/.local/share/CasjaysDev/dockermgr/neovim/rootfs/." "$dockerHome/"
 docker run -d \
@@ -47,8 +47,8 @@ services:
       - TZ=America/New_York
       - HOSTNAME=neovim
     volumes:
-      - "/var/lib/srv/$USER/docker/casjaysdevdocker/neovim/neovim/latest/rootfs/data:/data:z"
-      - "/var/lib/srv/$USER/docker/casjaysdevdocker/neovim/neovim/latest/rootfs/config:/config:z"
+      - "/srv/$USER/docker/casjaysdevdocker/neovim/neovim/latest/rootfs/data:/data:z"
+      - "/srv/$USER/docker/casjaysdevdocker/neovim/neovim/latest/rootfs/config:/config:z"
     ports:
       - 80:80
     restart: always
